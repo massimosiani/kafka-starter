@@ -1,0 +1,7 @@
+.idea/
+data/
+target/
+kafka-starter.iml
+kafka-starter.ipr
+kafka-starter.iws
+kafkastarter.iml

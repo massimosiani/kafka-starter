@@ -1,0 +1,11 @@
+[
+{"namespace": "kafkastarter.avro.model",
+ "type": "record",
+ "name": "KeyValue",
+ "fields": [
+     {"name": "id", "type": "long"},
+     {"name": "key", "type": "string"},
+     {"name": "value", "type": "string"}
+ ]
+}
+]

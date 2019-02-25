@@ -1,0 +1,44 @@
+version: '2'
+services:
+  zookeeper:
+    container_name: zookeeper_1
+    image: zookeeper
+    ports:
+      - 2181:2181
+  kafka-starter:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka-starter
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_LOG_CLEANER_ENABLED: "true"
+      KAFKA_LOG_CLEANUP_POLICY: compact
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+      JMX_PORT: 1099
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/kafka-starter
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/data/kafka:/kafka/
+  kafka-schema-registry:
+    image: confluentinc/cp-schema-registry
+    ports:
+      - 8081:8081
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181/kafka-starter
+      SCHEMA_REGISTRY_HOST_NAME: localhost
+#  kafka-connect:
+#    image: confluentinc/cp-kafka-connect
+#    environment:
+#      CONNECT_BOOTSTRAP_SERVERS: kafka-starter:9092
+#      CONNECT_GROUP_ID: "quickstart"
+#      CONNECT_CONFIG_STORAGE_TOPIC: "quickstart-config"
+#      CONNECT_OFFSET_STORAGE_TOPIC: "quickstart-offsets"
+#      CONNECT_STATUS_STORAGE_TOPIC: "quickstart-status"
+#      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+#      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+#      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+#      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+#      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+#      CONNECT_PLUGIN_PATH: /usr/share/java
