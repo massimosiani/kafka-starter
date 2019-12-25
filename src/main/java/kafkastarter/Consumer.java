@@ -1,5 +1,6 @@
 package kafkastarter;
 
+import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import kafkastarter.avro.model.KeyValue;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -24,7 +25,7 @@ public class Consumer {
         properties.put(ConsumerConfig.CLIENT_ID_CONFIG, "Kafka Consumer 1");
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka-starter");
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.KafkaAvroDeserializer.class);
-        properties.put("schema.registry.url", "http://localhost:8081");
+        properties.put(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, io.confluent.kafka.serializers.KafkaAvroDeserializer.class);
         return new KafkaConsumer<>(properties);
     }
@@ -44,7 +45,7 @@ public class Consumer {
                 }
             }
         } catch (WakeupException wuex) {
-            // nothing
+            log.info("Consumer {} has polled {} times", consumer, count);
         }
     }
 }
