@@ -16,7 +16,7 @@
     </repositories>
 
     <properties>
-        <avro.version>1.11.3</avro.version>
+        <avro.version>1.11.4</avro.version>
         <confluent.version>5.1.0</confluent.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
